@@ -9,6 +9,7 @@ from core.system import (
     get_os,
     get_python,
 )
+# Retaining your working original modules path
 from modules.fact.fact import get_fact
 
 console = Console()
@@ -32,19 +33,19 @@ def startup():
     internet = check_internet()
     if internet.success:
         console.print(f"[green]✓ Internet Connected[/green] ({internet.message})")
-        logger.info(f"[NETWORK] Status: {internet.message}")
+        logger.info(f"[NETWORK] Status: {internet.message} | Bench: {internet.duration_ms}ms")
     else:
         console.print("[yellow]⚠ Offline Mode[/yellow]")
-        logger.warning(f"[NETWORK] Status: {internet.message} | Error: {internet.error}")
+        logger.warning(f"[NETWORK] Status: {internet.message}")
 
     # 2. Process Local AI Engine Diagnostics
     ollama = check_ollama()
     if ollama.success:
         console.print(f"[green]✓ Ollama Running[/green] ({ollama.message})")
-        logger.info(f"[OLLAMA] Status: {ollama.message}")
+        logger.info(f"[OLLAMA] Status: {ollama.message} | Bench: {ollama.duration_ms}ms")
     else:
-        console.print("[red]✗ Ollama Not Found[/red]")
-        logger.error(f"[OLLAMA] Status: {ollama.message} | Error: {ollama.error}")
+        console.print("[red]✗ Ollama Offline[/red]")
+        logger.error(f"[OLLAMA] Status: {ollama.message}")
 
     # 3. Process Skill Layer Execution
     if internet.success:
