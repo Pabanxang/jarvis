@@ -12,7 +12,8 @@ def check_internet() -> Result:
     start_time = time.perf_counter()
 
     try:
-        socket.create_connection((NETWORK_HOST, NETWORK_PORT), timeout=NETWORK_TIMEOUT)
+        with socket.create_connection((NETWORK_HOST, NETWORK_PORT), timeout=NETWORK_TIMEOUT):
+            pass
         execution_time = (time.perf_counter() - start_time) * 1000
         return Result(
             success=True,
