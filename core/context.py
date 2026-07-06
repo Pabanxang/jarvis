@@ -1,7 +1,8 @@
+# core/context.py
 from __future__ import annotations
-
 from typing import Optional
 
+from core.brain import Brain  # Mount our new core processor
 from core.event_bus import EventBus
 from core.logger import logger
 from core.plugin_manager import PluginManager
@@ -14,6 +15,7 @@ class ApplicationContext:
         self.logger = logger
         self.event_bus: Optional[EventBus] = None
         self.plugin_manager: Optional[PluginManager] = None
+        self.brain: Optional[Brain] = None  # Allocate registration field
         self._initialized = False
 
     def initialize(self) -> None:
@@ -22,12 +24,15 @@ class ApplicationContext:
 
         self.logger.info("[CONTEXT] Initializing core application framework context...")
         
-        # 1. Spin up the Event Bus first so other components can bind to it immediately
+        # 1. Spin up the Event Bus first
         self.event_bus = EventBus()
         
-        # 2. Spin up the Plugin Manager and pass our context downwards
+        # 2. Spin up the Plugin Manager and auto-discover packages
         self.plugin_manager = PluginManager(self)
         self.plugin_manager.discover_and_load()
+
+        # 3. Mount the central processing brain logic core
+        self.brain = Brain(self)
         
         self._initialized = True
         self.logger.info("[CONTEXT] System core dependencies mounted successfully.")
