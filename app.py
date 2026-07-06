@@ -1,64 +1,18 @@
-from rich.console import Console
-from rich.panel import Panel
-
-from config import APP_NAME, VERSION
-from core.logger import logger
-from core.system import (
-    check_internet,
-    check_ollama,
-    get_os,
-    get_python,
-)
-# Retaining your working original modules path
-from modules.fact.fact import get_fact
-
-console = Console()
-
-
-def startup():
-    logger.info("[SYSTEM] Lifecycle | Jarvis Started")
-
-    console.print(
-        Panel.fit(
-            f"[bold cyan]{APP_NAME}[/bold cyan]\nVersion {VERSION}",
-            title="Starting",
-        )
-    )
-
-    console.print()
-    console.print(f"Operating System : {get_os()}")
-    console.print(f"Python           : {get_python()}")
-
-    # 1. Process Network Diagnostics
-    internet = check_internet()
-    if internet.success:
-        console.print(f"[green]✓ Internet Connected[/green] ({internet.message})")
-        logger.info(f"[NETWORK] Status: {internet.message} | Bench: {internet.duration_ms}ms")
-    else:
-        console.print("[yellow]⚠ Offline Mode[/yellow]")
-        logger.warning(f"[NETWORK] Status: {internet.message}")
-
-    # 2. Process Local AI Engine Diagnostics
-    ollama = check_ollama()
-    if ollama.success:
-        console.print(f"[green]✓ Ollama Running[/green] ({ollama.message})")
-        logger.info(f"[OLLAMA] Status: {ollama.message} | Bench: {ollama.duration_ms}ms")
-    else:
-        console.print("[red]✗ Ollama Offline[/red]")
-        logger.error(f"[OLLAMA] Status: {ollama.message}")
-
-    # 3. Process Skill Layer Execution
-    if internet.success:
-        console.print()
-        console.rule("Today's Fact")
-        logger.info("[SKILL] Fact | Triggering network data fetch")
-        console.print(f"\n{get_fact()}\n")
-        logger.info("[SKILL] Fact | Render complete")
-
-    console.print()
-    console.print("[bold green]System Ready.[/bold green]")
-    logger.info("[SYSTEM] Lifecycle | Startup complete. Engine Idle.")
-
+# app.py
+import time
+from core.context import ApplicationContext
 
 if __name__ == "__main__":
-    startup()
+    # Boot the application container environment
+    context = ApplicationContext()
+    context.initialize()
+    
+    print("\n--- Simulating Live System Events ---\n")
+    
+    # Broadcast an independent system event into the pipeline
+    context.event_bus.publish("system.heartbeat", {"sender": "KernelScheduler"})
+    
+    time.sleep(0.5)
+    
+    # Safely release resource chains
+    context.shutdown()

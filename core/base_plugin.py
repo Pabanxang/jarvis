@@ -1,7 +1,12 @@
+from __future__ import annotations
 from abc import ABC, abstractmethod
-from core.context import ApplicationContext
+from typing import TYPE_CHECKING
+
 from core.plugin_request import PluginRequest
 from core.result import Result
+
+if TYPE_CHECKING:
+    from core.context import ApplicationContext
 
 
 class BasePlugin(ABC):

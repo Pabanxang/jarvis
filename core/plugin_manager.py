@@ -1,12 +1,15 @@
+from __future__ import annotations
 import importlib
 import os
 import pkgutil
-from typing import Dict, Type
+from typing import Dict, Type, TYPE_CHECKING
 
 from core.base_plugin import BasePlugin
-from core.context import ApplicationContext
 from core.plugin_request import PluginRequest
 from core.result import Result
+
+if TYPE_CHECKING:
+    from core.context import ApplicationContext
 
 
 class PluginManager:
