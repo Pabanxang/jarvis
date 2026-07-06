@@ -1,4 +1,5 @@
 import requests
+from core.logger import logger
 
 
 def fetch_json(url, timeout=10):
@@ -9,12 +10,9 @@ def fetch_json(url, timeout=10):
 
     try:
         response = requests.get(url, timeout=timeout)
-
         response.raise_for_status()
-
         return response.json()
 
     except requests.RequestException as e:
-        print(f"Network Error: {e}")
-
+        logger.error(f"Network Error while fetching {url}: {e}")
         return None

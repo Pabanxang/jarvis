@@ -1,18 +1,15 @@
 # app.py
-import time
 from core.context import ApplicationContext
+from core.assistant import Assistant
 
 if __name__ == "__main__":
     # Boot the application container environment
     context = ApplicationContext()
     context.initialize()
     
-    print("\n--- Simulating Live System Events ---\n")
-    
-    # Broadcast an independent system event into the pipeline
-    context.event_bus.publish("system.heartbeat", {"sender": "KernelScheduler"})
-    
-    time.sleep(0.5)
+    # Start the main interaction loop
+    assistant = Assistant(context)
+    assistant.start()
     
     # Safely release resource chains
     context.shutdown()
